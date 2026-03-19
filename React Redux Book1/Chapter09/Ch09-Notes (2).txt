@@ -1,0 +1,259 @@
+========== CHAPTER 09 ==========
+
+
+1)
+https://console.firebase.google.com/
+
+
+2) To test firebase install
+a) In App.js
+import { getApp } from "firebase/app";
+
+
+constructor(props) {
+    super(props);
+    console.log(getApp());
+  }
+
+
+3) 9.4. Displaying List of Users
+
+import React, { Component } from "react";
+import { getDatabase, ref, onValue } from "firebase/database";
+
+class User extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: [],
+    };
+  }
+
+  componentDidMount() {
+
+    const db = getDatabase();
+    const dbRef = ref(db, "/");
+    
+    onValue(dbRef, (snapshot) => {
+      console.log(snapshot.val());
+
+      const data = snapshot.val();
+      const usersArray = Object.values(data); //converts object to array
+
+      this.setState({ users: usersArray });
+
+    });
+  }
+
+  render() {
+    return <div></div>;
+  }
+}
+
+export default User
+
+
+
+4) 9.5. Adding a User 
+
+a) Add Button
+import { Link } from "react-router-dom";
+
+<Link to="/add">
+  <Button variant="primary">Add</Button>
+</Link>
+
+
+b) UserForm.js
+import React from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { getDatabase, ref, push } from "firebase/database";
+import { useNavigate } from "react-router-dom";
+
+function UserForm() {
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <Formik
+        initialValues={{ username: "", email: "" }}
+        validate={(values) => {
+          let errors = {};
+          if (!values.email) {
+            errors.email = "Required";
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            errors.email = "Invalid email address";
+          } else if (values.email.length < 10) {
+            errors.email = "Email address too short";
+          }
+
+          if (!values.username) {
+            errors.username = "Required";
+          } else if (values.username.length < 3) {
+            errors.username = "username too short";
+          }
+
+          return errors;
+        }}
+        onSubmit={(values, { setSubmitting }) => {
+          setTimeout(() => {
+            const db = getDatabase();
+            const dbRef = ref(db, "/");
+
+            push(dbRef, {
+              username: values.username,
+              email: values.email,
+            }).then(() => {
+              navigate("/");        
+              setSubmitting(false);
+            });
+          }, 400);
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form>
+            <Field type="email" name="email" />
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              <ErrorMessage name="email" component="div" />
+            </span>
+            <Field type="text" name="username" />
+            <span style={{ color: "red", fontWeight: "bold" }}>
+              <ErrorMessage name="username" component="div" />
+            </span>
+            <button type="submit" disabled={isSubmitting}>
+              Submit
+            </button>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  );
+}
+
+export default UserForm;
+
+===============================================================================
+
+9.6. delete function:
+a) Add "remove" to import statement from firebase/database
+
+b) 
+delete(e) {
+    const db = getDatabase();
+    remove(ref(db, "/" + this.state.selectedUser.id))
+      .then((x) => {
+        console.log("SUCCESS");
+        this.closeDeleteDialog();
+      })
+      .catch((error) => {
+        alert("Could not delete the user.");
+        console.log("ERROR", error);
+      });
+  }
+
+
+
+c) Modify componentDidMount to:
+ componentDidMount() {
+    const db = getDatabase();
+    const dbRef = ref(db, "/");
+
+    onValue(dbRef, (snapshot) => {
+      console.log(snapshot.val());
+
+      const data = snapshot.val();
+      const usersArray = Object.entries(data).map(([id, value]) => ({
+        ...value,
+        id: id,  // explicitly attach the firebase key as the id
+      }));
+
+      this.setState({ users: usersArray });
+    });
+  }
+
+
+d) Modify index.html
+<link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+
+
+
+9.7. edit functionality
+
+a) import React, { useState, useEffect } from "react";
+
+b) add the following to import statement from firebase/database:
+	 update , get
+
+c) add following to import from react-router-dom:
+	useParams
+
+d) 
+function UserForm() {
+  const navigate = useNavigate();
+  const { id } = useParams(); // replaces this.props.match.params.id
+  const title = id ? "Edit User" : "New User"; // replaces the if(this.id) logic
+
+  const [initialValues, setInitialValues] = useState({
+    username: "",
+    email: "",
+  });
+
+  // replaces componentDidMount
+  useEffect(() => {
+    if (id) {
+      const db = getDatabase();
+      const dbRef = ref(db, "/" + id);
+
+      get(dbRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          setInitialValues({
+            username: snapshot.val().username,
+            email: snapshot.val().email,
+          });
+        }
+      });
+    }
+  }, [id]);
+
+
+e) In formik:
+ initialValues={initialValues}
+
+
+
+
+
+9.8. Updating User
+
+onSubmit={(values, { setSubmitting }) => {
+  setTimeout(() => {
+    const db = getDatabase();
+
+    if (id) {
+      const dbRef = ref(db, "/" + id);
+      update(dbRef, {
+        username: values.username,
+        email: values.email,
+      }).then(() => {
+        navigate("/");
+        setSubmitting(false);
+      });
+    } else {
+      const dbRef = ref(db, "/");
+      push(dbRef, {
+        username: values.username,
+        email: values.email,
+      }).then(() => {
+        navigate("/");
+        setSubmitting(false);
+      });
+    }
+  }, 400);
+}}
+
