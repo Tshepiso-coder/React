@@ -19,7 +19,7 @@
 //========================================
 
 //import React, { Component } from 'react'; 
-
+//component changed to funciton
 function Products() { 
 const products = ["Learning React","Pro React","Beginning React"]; 
 const listProducts = products.map((product) =>  
