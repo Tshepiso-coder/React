@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import Product from './Product';
 
-class Products extends Component {
+function Products() {
 
-    products;
+    // products;
+  
+    // constructor(props) {
+    //     super(props);
+    //     this.products = this.getProducts();
+    // }
 
-    constructor(props) {
-        super(props);
-        this.products = this.getProducts();
-    }
-
-    getProducts() {
+   const getProducts = () => {
         return [
             {
                 imageUrl: "http://loremflickr.com/150/150?random=1",
@@ -40,9 +40,9 @@ class Products extends Component {
                 numOfReviews: 2
             }];
     }
+     const products = getProducts();
 
-    render() {
-        const listProducts = this.products.map((product) =>
+        const listProducts = products.map((product) =>
             <Product key={product.productName} data={product} />
         );
     
@@ -52,7 +52,6 @@ class Products extends Component {
             </div>
         );
     }
-}
 export default Products;
 
 // ## Summary

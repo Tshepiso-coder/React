@@ -1,7 +1,7 @@
 import logo from "./logo.svg";
 import "./App.css";
 import Products from "./Products";
-import { Component } from "react";
+//import { Component } from "react";
 import { Button } from 'react-bootstrap'; 
 import Rating from "./Rating";
 import { IoIosStar, IoIosStarOutline } from 'react-icons/io' 
