@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import { Container, Button } from "react-bootstrap";
 
-class JumboTronComponent extends Component {
-  render() {
+function JumboTronComponent(props) {
     return (
       <div>
-        <Container className="p-5 mb-4 bg-light rounded-3">
+        <Container fluid className="p-5 mb-4 bg-light rounded-3">
           <h1>Hello, world!</h1>
           <p>
-           {this.props.children}
+           {props.children}
           </p>
           <p>
             <Button variant="primary">Learn more</Button>
@@ -17,26 +16,26 @@ class JumboTronComponent extends Component {
       </div>
     );
   }
-}
+
 
 export default JumboTronComponent;
 
-        {/* EXAMPLE 1: Hardcoding jumbotron content in its own component /}
-        {/ <JumboTronComponent /> /}
+        // {/ EXAMPLE 1: Hardcoding jumbotron content in its own component /}
+        // {/ <JumboTronComponent /> /}
 
-        {/ EXAMPLE 2: Pass content to jumbotron content via props objects /}
-        {/ <JumboTronComponent body="Incerting content dynamically" /> /}
+        // EXAMPLE 2: Pass content to jumbotron content via props objects
+        // <JumboTronComponent body="Incerting content dynamically" />
 
-        {/ EXAMPLE 3: Passing content from outside component via props.children /}
-        {/ Anything in this opening and closing tags, that can be added to the jumbotron we built, 
-        this is referred to 'children'. So to call it we will say this.props.children */}
+        // EXAMPLE 3: Passing content from outside component via props.children 
+        // Anything in this opening and closing tags, that can be added to the jumbotron we built, 
+        // this is referred to 'children'. So to call it we will say this.props.children
 
-        <JumboTronComponent>
+        // <JumboTronComponent>
 
-          This is a long sentence, and I want to insert content into the
-          jumbotron component from the outside.
+        //   This is a long sentence, and I want to insert content into the
+        //   jumbotron component from the outside.
 
-        </JumboTronComponent>
+        // </JumboTronComponent>
 
 //===============
 // This is a React class component called JumboTronComponent that renders a styled hero/banner 
