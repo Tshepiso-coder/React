@@ -1,0 +1,56 @@
+7.4. Showing Loader Icon
+
+a) Install Package
+npm i react-spinners
+
+b) Import Loader icon
+import { Type } from "react-spinners";
+
+c) Implement in return statement
+{this.state.isLoading && <Type />}
+
+
+
+7.5. Implement GitHub Users Display
+
+
+a) Import statements
+import Card from "react-bootstrap/Card";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+
+b) In render() method:
+render() {
+    const listUsers = this.state.data.map((user) => (
+      <Col key={user.id} xs={12} sm={6} md={4} lg={3}>
+        <Card>
+          <a href={user.html_url}>
+            <Card.Img src={user.avatar_url} alt="Generic placeholder" />
+          </a>
+          <Card.Body>
+            <h5>Login: {user.login}</h5>
+            <p>Id: {user.id}</p>
+          </Card.Body>
+        </Card>
+      </Col>
+    ));
+
+
+c) In return statement
+<Row>{listUsers}</Row>
+
+
+
+NOTES:
+These props refer to screen sizes:
+xs = extra small  (mobile phones)
+sm = small        (tablets)
+md = medium       (small laptops)
+lg = large        (desktops)
+
+And the number is how many units out of 12 each card takes up at that screen size. Remember the total is always 12:
+xs={12} → card takes up 12/12 = full width → 1 card per row (mobile)
+sm={6}  → card takes up 6/12  = half width → 2 cards per row (tablet)
+md={4}  → card takes up 4/12  = one third  → 3 cards per row (laptop)
+lg={3}  → card takes up 3/12  = one quarter→ 4 cards per row (desktop)
