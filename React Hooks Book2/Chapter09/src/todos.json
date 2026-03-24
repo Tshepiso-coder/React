@@ -1,0 +1,21 @@
+{
+  "todos": [
+    {
+      "id": "1",
+      "text": "finishing writing hooks chapter"
+    },
+    {
+      "id": "x2s7bFM4ZQc",
+      "text": "Test1"
+    },
+    {
+      "id": "GjVH4clDVBs",
+      "text": "Test2"
+    },
+    {
+      "id": "JJzvOR-R7gQ",
+      "text": "Test3"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

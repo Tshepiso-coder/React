@@ -1,0 +1,72 @@
+Chapter08
+
+8.1. Setting Up Our Routes
+
+a) Import
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+b) Header Component
+class Header extends Component { 
+  render(){ 
+    return ( 
+        <BrowserRouter> 
+          <div>                    
+            <Routes>               
+              <Route path="/github" element={<GitHub />} />               
+              <Route exact path="/" element={<Home />} />              
+              <Route path="/*" element={<NotFound />} />                        
+            </Routes>    
+          </div>   
+        </BrowserRouter>               
+    ) 
+  } 
+}
+
+
+
+8.3. Route Parameters
+a)
+<Route path="/github/user/:login/:id" element={<GitHubUser />} />
+
+b) Retrieving Route Params - GitHubUser.js
+import React from "react";
+import { useParams } from "react-router-dom";
+
+function GitHubUser() {
+  const { login, id } = useParams();
+  return (
+    <div>
+      <h1>User Login: {login}</h1>
+      <h2>User Id: {id}</h2>
+    </div>
+  );
+}
+
+export default GitHubUser;
+
+
+8.4. Programmatic Navigation
+
+import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Button } from 'react-bootstrap';
+
+function GitHubUser() {
+  const { login, id } = useParams();
+  const navigate = useNavigate();
+
+  return (
+    <div>
+      <h1>User Login: {login}</h1>
+      <h2>User Id: {id}</h2>
+      <Button variant="primary" onClick={() => navigate("/github")}>
+        Go to GitHub Users
+      </Button>
+    </div>
+  );
+}
+
+export default GitHubUser;
+
+
+
